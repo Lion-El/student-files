@@ -2,6 +2,7 @@ const gallery = document.getElementById('gallery');
 const card = document.querySelector('.card');
 let userEmployees;
 
+// MODAL OBJECT REPOSITORY
 const modalRepository  = {
     modalCard: null,
 
@@ -14,6 +15,7 @@ const modalRepository  = {
     }
 }
 
+//render modal/employee card to display
 gallery.addEventListener('click', (e) => {
     const employeeCard = e.target.closest('.card');
     const isOutside = !e.target.closest('.card');
@@ -23,9 +25,9 @@ gallery.addEventListener('click', (e) => {
         employeeCard.classList.remove('remove');
     }
 
-    const user = userEmployees.results.filter(employee => {
+    const user = userEmployees.results.find(employee => {
         return employee.email === employeeCard.querySelector('.card-text').innerText;
-    }).shift();
+    });
     
     const modal = new Modal(user);
     modalRepository.newModal = modal;
@@ -33,6 +35,7 @@ gallery.addEventListener('click', (e) => {
     gallery.insertAdjacentHTML('afterend', modal.card);
 });
 
+// remove modal/employee card from display
 document.addEventListener('click', (e) => {
     const modal = document.querySelector('.modal-container');
     const closed = e.target.closest('.modal-info-container');
@@ -41,7 +44,9 @@ document.addEventListener('click', (e) => {
     } else if (!closed) modal.classList.add('remove');
 });
 
-// collect data and load to page
+//========================
+//  FETCH DATA & DISPLAY
+//------------------------
 async function returnJsonObj(url) {
     try {
         const employees = await fetch(url);
@@ -70,7 +75,5 @@ async function displayEmployees() {
     console.log(employeeCards);
     gallery.insertAdjacentHTML('beforeend', employeeCards);
 }
-
-
 
 displayEmployees();
