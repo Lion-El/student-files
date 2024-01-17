@@ -1,8 +1,9 @@
 const gallery = document.getElementById('gallery');
 const card = document.querySelector('.card');
+const div = document.querySelector('.search-container');
 let userEmployees;
 
-// MODAL OBJECT REPOSITORY
+// modal repository
 const modalRepository  = {
     modalCard: null,
 
@@ -39,41 +40,60 @@ gallery.addEventListener('click', (e) => {
 document.addEventListener('click', (e) => {
     const modal = document.querySelector('.modal-container');
     const closed = e.target.closest('.modal-info-container');
-    if (e.target.closest('.card')) {
+    if (e.target.closest('.card')
+     || e.target.closest('form')
+     || e.target.closest('.gallery')) {
         return
     } else if (!closed) modal.classList.add('remove');
 });
 
+
+div.addEventListener('keyup', (e) => {
+    const input = e.target.value;
+    console.log(userEmployees);
+    const filter = userEmployees.results.filter(obj => {
+        let fullName = `${obj.name.first.toLowerCase()} ${obj.name.last.toLowerCase()}`;
+        return fullName.includes(e.target.value);
+    });
+
+    console.log(filter);
+    const results = new Results(filter);
+    const resultCards = results.displayResults(filter);
+    gallery.innerHTML = '';
+    gallery.insertAdjacentHTML('afterbegin', resultCards);
+});
+
+//display search form
+function addSearchToDisplay() {
+    const search = `
+        <form action="#" method="get">
+            <input type="search" id="search-input" class="search-input" placeholder="Search...">
+            <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+        </form>
+        `;
+    div.insertAdjacentHTML('afterbegin', search);
+}
+
 //========================
 //  FETCH DATA & DISPLAY
 //------------------------
-async function returnJsonObj(url) {
+async function returnPromise() {
     try {
-        const employees = await fetch(url);
-        return await employees.json();
+        const promise = await fetch('https://randomuser.me/api/?results=12&nat=gb');
+        return promise;
     } catch (error) {
         throw error;
     }
 }
 
 async function displayEmployees() {
-    const employees = await returnJsonObj('https://randomuser.me/api/?results=12');
+    const promise = await returnPromise();
+    const employees = await promise.json();
     userEmployees = employees;
-    console.log(employees);
-    const employeeCards = employees.results.map(card => {
-        return `<div class="card">
-                    <div class="card-img-container">
-                        <img class="card-img" src="${card.picture.large}" alt="profile picture">
-                    </div>
-                    <div class="card-info-container">
-                        <h3 id="name" class="card-name cap">${card.name.first} ${card.name.last}</h3>
-                        <p class="card-text">${card.email}</p>
-                        <p class="card-text cap">${card.location.city}, ${card.location.state}</p>
-                    </div>
-                </div>`
-    });
-    console.log(employeeCards);
+    const results = new Results(employees);
+    const employeeCards = results.displayResults(employees.results);
     gallery.insertAdjacentHTML('beforeend', employeeCards);
 }
 
 displayEmployees();
+addSearchToDisplay();
