@@ -1,7 +1,20 @@
 const gallery = document.getElementById('gallery');
 const card = document.querySelector('.card');
 const div = document.querySelector('.search-container');
-let userEmployees;
+let employees;
+
+// results repository
+const resultsRepository  = {
+    resultCards: null,
+
+    set newCards(results) {
+        this.resultCards = results; 
+    },
+
+    get newCards() {
+        return this.resultCards;
+    }
+}
 
 // modal repository
 const modalRepository  = {
@@ -16,7 +29,7 @@ const modalRepository  = {
     }
 }
 
-//render modal/employee card to display
+// render modal/employee card to display
 gallery.addEventListener('click', (e) => {
     const employeeCard = e.target.closest('.card');
     const isOutside = !e.target.closest('.card');
@@ -26,7 +39,7 @@ gallery.addEventListener('click', (e) => {
         employeeCard.classList.remove('remove');
     }
 
-    const user = userEmployees.results.find(employee => {
+    const user = employees.results.find(employee => {
         return employee.email === employeeCard.querySelector('.card-text').innerText;
     });
     
@@ -40,27 +53,60 @@ gallery.addEventListener('click', (e) => {
 document.addEventListener('click', (e) => {
     const modal = document.querySelector('.modal-container');
     const closed = e.target.closest('.modal-info-container');
-    if (e.target.closest('.card')
-     || e.target.closest('form')
-     || e.target.closest('.gallery')) {
+    
+    if (!e.target.closest('.modal')) {
         return
     } else if (!closed) modal.classList.add('remove');
 });
 
+// toggle modal/employee cards
+function toggleCard(index) {
+    const modalDisplay = document.querySelector('.modal-container');
+    const results = resultsRepository.newCards;
+    const nextCard = results.results.find((card, count) => {
+        return count === index;
+    });
+    const modal = new Modal(nextCard);
+    modalRepository.newModal = modal;
+    modal.openModalWindow();
+    modalDisplay.innerHTML = modal.card;
+}
 
+// call to toggle between next or previous modal/employee card
+document.addEventListener('click', (e) => {
+    const modalObj = modalRepository.newModal;
+    const results = resultsRepository.newCards;
+    let index;
+
+    if (e.target.classList.contains('modal-next')) {
+        index = results.results.indexOf(modalObj.modal)+1;
+        if (index === results.results.length) return;
+        toggleCard(index);
+    } else if (e.target.classList.contains('modal-prev')) {
+        index = results.results.indexOf(modalObj.modal)-1;
+        if (index < 0) return;
+        toggleCard(index);
+    } else {
+        return;
+    }
+});
+
+// filter gallery employee cards
 div.addEventListener('keyup', (e) => {
-    const input = e.target.value;
-    console.log(userEmployees);
-    const filter = userEmployees.results.filter(obj => {
+    const filterdList = employees.results.filter(obj => {
         let fullName = `${obj.name.first.toLowerCase()} ${obj.name.last.toLowerCase()}`;
         return fullName.includes(e.target.value);
     });
 
-    console.log(filter);
-    const results = new Results(filter);
-    const resultCards = results.displayResults(filter);
-    gallery.innerHTML = '';
-    gallery.insertAdjacentHTML('afterbegin', resultCards);
+    if (filterdList.length > 0) {
+        const results = new Results(filterdList);
+        resultsRepository.newCards = results;
+        results.displayResults(filterdList);
+        gallery.innerHTML = '';
+        gallery.insertAdjacentHTML('afterbegin', results.resultsArray);
+    } else {
+        gallery.innerHTML = `<h2>No results found</h2>`;
+    }
 });
 
 //display search form
@@ -88,11 +134,12 @@ async function returnPromise() {
 
 async function displayEmployees() {
     const promise = await returnPromise();
-    const employees = await promise.json();
-    userEmployees = employees;
-    const results = new Results(employees);
-    const employeeCards = results.displayResults(employees.results);
-    gallery.insertAdjacentHTML('beforeend', employeeCards);
+    employees = await promise.json();
+    const fullList = employees.results.filter(obj => obj.nat);
+    const results = new Results(fullList);
+    resultsRepository.newCards = results;
+    results.displayResults(employees.results);
+    gallery.insertAdjacentHTML('beforeend', results.resultsArray);
 }
 
 displayEmployees();

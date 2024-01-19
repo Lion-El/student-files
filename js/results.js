@@ -17,6 +17,5 @@ class Results {
                         </div>
                     </div>`
         });
-        return this.resultsArray;
     }
 }

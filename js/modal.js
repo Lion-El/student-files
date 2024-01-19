@@ -21,6 +21,11 @@ class Modal {
                         <p class="modal-text">Birthday: ${this.modal.dob.date}</p>
                     </div>
                 </div>
+
+                <div class="modal-btn-container">
+                    <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+                    <button type="button" id="modal-next" class="modal-next btn">Next</button>
+                </div>
             </div>
             `;
     }
