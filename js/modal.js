@@ -3,7 +3,6 @@ class Modal {
         this.modal = employee;
         this.card = null;
         this._birthday = null;
-        this.currentYear = null;
     }
 
     openModalWindow() {

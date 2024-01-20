@@ -3,7 +3,7 @@ const card = document.querySelector('.card');
 const div = document.querySelector('.search-container');
 let employees;
 
-// results repository
+// gallery cards repository
 const resultsRepository  = {
     resultCards: null,
 
@@ -16,7 +16,7 @@ const resultsRepository  = {
     }
 }
 
-// modal repository
+// modal/employee card repository
 const modalRepository  = {
     modalCard: null,
 
