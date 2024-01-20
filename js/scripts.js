@@ -95,7 +95,7 @@ document.addEventListener('click', (e) => {
 div.addEventListener('keyup', (e) => {
     const filterdList = employees.results.filter(obj => {
         let fullName = `${obj.name.first.toLowerCase()} ${obj.name.last.toLowerCase()}`;
-        return fullName.includes(e.target.value);
+        return fullName.includes(e.target.value.toLowerCase());
     });
 
     if (filterdList.length > 0) {
