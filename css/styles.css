@@ -17,7 +17,7 @@ html, body {
 body {
     font-family: "Nunito", sans-serif;
     text-align: center;
-    background: rgba(235, 235, 235, 0.9);
+    background: #0e334f;
 }
 
 header {
@@ -31,7 +31,7 @@ header {
 
 header h1 {
     font-size: 1.25em;
-    color: rgba(50, 50, 50, 0.9);
+    color: rgba(235, 235, 235, 0.9);
     margin-top: 35px;
 }
 
@@ -86,9 +86,9 @@ header h1 {
     max-width: 360px;
     margin: 10px 10px 20px;
     padding: 10px;
-    background: rgba(245, 245, 245, 0.9);
+    background: #0e334f;
     border-radius: 0.25em;
-    border: 1px solid rgba(50, 50, 50, 0.3);
+    border: 1px solid rgba(235, 235, 235, 0.9);
     transition: .4s ease-out;
     overflow: hidden;
 }
@@ -105,11 +105,12 @@ header h1 {
 
 .card-name {
     margin: 20px auto 0;
+    color: #fdb92c;
 }
 
 .card-text {
     font-size: 0.9em;
-    color: rgba(50, 50, 50, 0.7);
+    color: rgba(235, 235, 235, 0.9);
     margin: 7px auto;
     transition: .4s ease-out;
 }
@@ -249,8 +250,12 @@ header h1 {
 @media (min-width: 1024px) {
 
     .card:hover {
-        background: rgba(255, 255, 255, 1);
-        border: 1px solid rgba(50, 50, 50, 0.9);
+        background: rgba(235, 235, 235, 1);
+        border: 1px solid rgba(0, 0, 0, 1);
+    }
+
+    .card:hover .card-name {
+        color: rgba(0, 0, 0, 1); 
     }
 
     .card:hover .card-text {
