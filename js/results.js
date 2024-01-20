@@ -16,6 +16,6 @@ class Results {
                             <p class="card-text cap">${card.location.city}, ${card.location.state}</p>
                         </div>
                     </div>`
-        });
+        }).join('');
     }
 }
