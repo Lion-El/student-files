@@ -121,7 +121,7 @@ function addSearchToDisplay() {
 }
 
 //========================
-//  FETCH DATA & DISPLAY
+//  FETCH & DISPLAY DATA
 //------------------------
 async function returnPromise() {
     try {
@@ -135,7 +135,7 @@ async function returnPromise() {
 async function displayEmployees() {
     const promise = await returnPromise();
     employees = await promise.json();
-    const fullList = employees.results.filter(obj => obj.nat);
+    const fullList = employees.results.filter(obj => obj.nat);          // reduce responce/json object level equal to filtered objects to match selction process. 
     const results = new Results(fullList);
     resultsRepository.newCards = results;
     results.displayResults(employees.results);
