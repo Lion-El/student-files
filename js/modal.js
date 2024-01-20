@@ -2,6 +2,8 @@ class Modal {
     constructor(employee) {
         this.modal = employee;
         this.card = null;
+        this._birthday = null;
+        this.currentYear = null;
     }
 
     openModalWindow() {
@@ -18,7 +20,7 @@ class Modal {
                         <p class="modal-text">${this.modal.phone}</p>
                         <p class="modal-text">${this.modal.location.street.number} ${this.modal.location.street.name}, 
                                                 ${this.modal.location.state}, ${this.modal.location.postcode}</p>
-                        <p class="modal-text">Birthday: ${this.modal.dob.date}</p>
+                        <p class="modal-text">Birthday: ${this.birthday(this.modal.dob.date)}</p>
                     </div>
                 </div>
 
@@ -29,6 +31,13 @@ class Modal {
             </div>
             `;
     }
+
+    birthday(dateObj) {
+        this._birthday = new Date(dateObj)
+        .toLocaleDateString('en-US', {day: '2-digit', month: '2-digit'});
+       return `${this._birthday}/${new Date().getFullYear()}`;
+    }
+
 }
 
 
