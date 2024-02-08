@@ -1,6 +1,6 @@
 # Student-files
 
-This student directory application demonstrates asynchronous HTTP requests, OOP, DOM manipulation, modal box and filter.
+This employee directory application demonstrates asynchronous HTTP requests, OOP, DOM manipulation, modal box and filter.
 
 ## Style changes
 
